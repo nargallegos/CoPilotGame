@@ -6,7 +6,8 @@ The game is currently under development. Copilot decided we are going to use Sna
 
 ## TODO:
 - [x] Fix head collision
-- [ ] Time based food spawning
+- [x] Time based food spawning
+- [ ] Each food spawn should be unique object
 - [ ] Color change spawning
 
 ## Setup and Installation

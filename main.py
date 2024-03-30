@@ -4,6 +4,20 @@ import time
 from pygame.locals import *
 from random import randint
 
+# Create a food class
+class Food:
+    def __init__(self):
+        self.position = [0, 0]
+        self.color = GREEN
+        self.spawned = False
+        self.last_spawn_time = pygame.time.get_ticks()
+
+    def spawn(self):
+        self.position[0] = randint(0, (WINDOW_WIDTH - 10) // 10) * 10
+        self.position[1] = randint(0, (WINDOW_HEIGHT - 10) // 10) * 10
+        self.spawned = True
+        self.last_spawn_time = pygame.time.get_ticks()
+
 # Initialize the game
 pygame.init()
 
@@ -40,18 +54,7 @@ new_head = [0, 0]
 food = [0, 0]
 food_color = GREEN
 food_spawned = False
-
-# Create a food class
-class Food:
-    def __init__(self):
-        self.position = [0, 0]
-        self.color = GREEN
-        self.spawned = False
-
-    def spawn(self):
-        self.position[0] = randint(0, (WINDOW_WIDTH - 10) // 10) * 10
-        self.position[1] = randint(0, (WINDOW_HEIGHT - 10) // 10) * 10
-        self.spawned = True
+food = Food()
 
 # Set up the score
 score = 0
@@ -67,6 +70,12 @@ while True:
         if event.type == QUIT:
             pygame.quit()
             sys.exit()
+
+        # Spawn food if 5 seconds have passed since the last spawn
+        if pygame.time.get_ticks() - food.last_spawn_time >= 5000:
+            food.spawn()
+
+        # Check for key presses
         elif event.type == KEYDOWN:
             if event.key == K_UP and snake_direction != DOWN:
                 snake_direction = UP
