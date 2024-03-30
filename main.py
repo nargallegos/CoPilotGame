@@ -55,16 +55,16 @@ clock = pygame.time.Clock()
 
 # Main game loop
 while True:
+    # Spawn apple if 5 seconds have passed since the last spawn
+    if pygame.time.get_ticks() - apples[-1].spawn_time >= 5000:
+    # if pygame.time.get_ticks() - apple.last_spawn_time >= 5000:
+        apples.append(Apple())  
+
     # Check for events and update the worm's direction.
     for event in pygame.event.get():
         if event.type == QUIT:
             pygame.quit()
             sys.exit()
-
-        # Spawn apple if 5 seconds have passed since the last spawn
-        if pygame.time.get_ticks() - apples[-1].spawn_time >= 5000:
-        # if pygame.time.get_ticks() - apple.last_spawn_time >= 5000:
-            apples.append(Apple())
 
         # Check for key presses and update the worm's direction.
         elif event.type == KEYDOWN:
