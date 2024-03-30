@@ -1,12 +1,12 @@
-nargallegos: write a readme file explaining that I am testing copilot by making a game with pygame
-
-GitHub Copilot: # My Pygame Project
-
 This project is a test of GitHub Copilot, an AI programming assistant. I am using it to assist me in developing a game using Pygame, a set of Python modules designed for writing video games.
 
 ## About the Game
 
-The game is currently under development. More details will be added as the project progresses.
+The game is currently under development. Copilot decided we are going to use Snake as the foundation of our ever evolving game.
+
+## TODO:
+- [ ] Time based food spawning
+- [ ] Color change spawning
 
 ## Setup and Installation
 
