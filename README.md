@@ -8,9 +8,9 @@ The game is currently under development. Copilot decided we are going to use Sna
 - [x] Fix head collision
 - [x] Time based food spawning
 - [x] Each food spawn should be unique object
-- [ ] Spawn golden apples
+- [x] Spawn multi colored apples based on chance (percentages)
 - [x] Fix bug where game freezes when apple is spawned
-- [ ] 
+- [ ] Give a special feature when a certain apple color is eaten
 
 ## Setup and Installation
 
