@@ -5,7 +5,7 @@ This project is a test of GitHub Copilot, an AI programming assistant. I am usin
 The game is currently under development. Copilot decided we are going to use Snake as the foundation of our ever evolving game.
 
 ## TODO:
-- [ ] Fix head collision
+- [x] Fix head collision
 - [ ] Time based food spawning
 - [ ] Color change spawning
 

@@ -1,10 +1,14 @@
 import pygame
 import sys
+import time
 from pygame.locals import *
 from random import randint
 
 # Initialize the game
 pygame.init()
+
+# Initialize time
+start_time = time.time()
 
 # Set up the window
 WINDOW_WIDTH = 800
@@ -36,6 +40,18 @@ new_head = [0, 0]
 food = [0, 0]
 food_color = GREEN
 food_spawned = False
+
+# Create a food class
+class Food:
+    def __init__(self):
+        self.position = [0, 0]
+        self.color = GREEN
+        self.spawned = False
+
+    def spawn(self):
+        self.position[0] = randint(0, (WINDOW_WIDTH - 10) // 10) * 10
+        self.position[1] = randint(0, (WINDOW_HEIGHT - 10) // 10) * 10
+        self.spawned = True
 
 # Set up the score
 score = 0
@@ -70,21 +86,30 @@ while True:
         new_head = [snake[0][0] - 10, snake[0][1]]
     elif snake_direction == RIGHT:
         new_head = [snake[0][0] + 10, snake[0][1]]
-
+    
+    # Insert the new head
     snake.insert(0, new_head)
+    
+    # Spawn food every 5 seconds
+    if not food_spawned:
+        food = Food()
+        food.spawn()
+        food_spawned = True
 
+    # If 5 seconds has elapsed
+    if time.time() - start_time > 5:
+        food = Food()
+        food.spawn()
+        start_time = time.time()
+        
     # Check for collision with food
-    if new_head == food:
+    if new_head == food.position:
+        # Spawn new food
         food_spawned = False
         score += 1
+    # If food not eaten snake does not grow
     else:
         snake.pop()
-
-    # Spawn food if needed
-    if not food_spawned:
-        food[0] = randint(0, (WINDOW_WIDTH - 10) // 10) * 10
-        food[1] = randint(0, (WINDOW_HEIGHT - 10) // 10) * 10
-        food_spawned = True
 
     # Check for collision with walls
     if new_head[0] < 0 or new_head[0] >= WINDOW_WIDTH or new_head[1] < 0 or new_head[1] >= WINDOW_HEIGHT:
@@ -102,14 +127,26 @@ while True:
     # Draw everything
     window.fill(BLACK)
 
+    # Draw grid for debugging
+    # for x in range(0, WINDOW_WIDTH, 10):
+    #     pygame.draw.line(window, WHITE, (x, 0), (x, WINDOW_HEIGHT))
+    # for y in range(0, WINDOW_HEIGHT, 10):
+    #     pygame.draw.line(window, WHITE, (0, y), (WINDOW_WIDTH, y))
+
+    # Draw the snake
     for segment in snake:
         pygame.draw.rect(window, WHITE, (segment[0], segment[1], 10, 10))
 
-    pygame.draw.rect(window, food_color, (food[0], food[1], 10, 10))
+    # Draw the food
+    pygame.draw.rect(window, food_color, (food.position[0], food.position[1], 10, 10))
 
+    # Draw the score
     score_text = score_font.render('Score: %d' % score, True, WHITE)
+    
+    # Draw the score in the top left corner 
     window.blit(score_text, (10, 10))
 
+    # Update the window
     pygame.display.update()
 
     # Cap the frame rate
