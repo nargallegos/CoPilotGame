@@ -4,8 +4,8 @@ import time
 from pygame.locals import *
 from random import randint
 
-# Create a food class to handle food spawning.
-class Food:
+# Create a apple class to handle apple spawning.
+class Apple:
     def __init__(self):
         self.position = [randint(0, (WINDOW_WIDTH - 10) // 10) * 10, randint(0, (WINDOW_HEIGHT - 10) // 10) * 10]
         self.color = GREEN
@@ -14,14 +14,14 @@ class Food:
 # Initialize the game engine.
 pygame.init()
 
-# Initialize time for food spawn.
+# Initialize time for apple spawn.
 start_time = time.time()
 
 # Set up the window for the game.
 WINDOW_WIDTH = 800
 WINDOW_HEIGHT = 600
 window = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
-pygame.display.set_caption('Snake')
+pygame.display.set_caption('worm')
 
 # Set up the colors for the game.
 WHITE = (255, 255, 255)
@@ -30,26 +30,26 @@ RED = (255, 0, 0)
 GREEN = (0, 255, 0)
 BLUE = (0, 0, 255)
 
-# Set up the directions for the snake.
+# Set up the directions for the worm.
 UP = 1
 DOWN = 2
 LEFT = 3
 RIGHT = 4
 
-# Set up the snake variables.
-snake = [[200, 200], [210, 200], [220, 200]]
-snake_direction = RIGHT
+# Set up the worm variables.
+worm = [[200, 200], [210, 200], [220, 200]]
+worm_direction = RIGHT
 
 # Initialize new_head variable.
 new_head = [0, 0]
 
-# Set up the food variables.
-food = [0, 0]
-food_color = GREEN
-food_spawned = False
+# Set up the apple variables.
+apple = [0, 0]
+apple_color = GREEN
+apple_spawned = False
 
-# Set up the foods list.
-foods = [Food(), Food(), Food()]
+# Set up the apples list.
+apples = [Apple(), Apple(), Apple()]
 
 # Set up the score font.
 score = 0
@@ -60,53 +60,53 @@ clock = pygame.time.Clock()
 
 # Main game loop
 while True:
-    # Check for events and update the snake's direction.
+    # Check for events and update the worm's direction.
     for event in pygame.event.get():
         if event.type == QUIT:
             pygame.quit()
             sys.exit()
 
-        # Spawn food if 5 seconds have passed since the last spawn
-        if pygame.time.get_ticks() - foods[-1].spawn_time >= 5000:
-        # if pygame.time.get_ticks() - food.last_spawn_time >= 5000:
-            foods.append(Food())
+        # Spawn apple if 5 seconds have passed since the last spawn
+        if pygame.time.get_ticks() - apples[-1].spawn_time >= 5000:
+        # if pygame.time.get_ticks() - apple.last_spawn_time >= 5000:
+            apples.append(Apple())
 
-        # Check for key presses and update the snake's direction.
+        # Check for key presses and update the worm's direction.
         elif event.type == KEYDOWN:
-            if event.key == K_UP and snake_direction != DOWN:
-                snake_direction = UP
-            elif event.key == K_DOWN and snake_direction != UP:
-                snake_direction = DOWN
-            elif event.key == K_LEFT and snake_direction != RIGHT:
-                snake_direction = LEFT
-            elif event.key == K_RIGHT and snake_direction != LEFT:
-                snake_direction = RIGHT
+            if event.key == K_UP and worm_direction != DOWN:
+                worm_direction = UP
+            elif event.key == K_DOWN and worm_direction != UP:
+                worm_direction = DOWN
+            elif event.key == K_LEFT and worm_direction != RIGHT:
+                worm_direction = LEFT
+            elif event.key == K_RIGHT and worm_direction != LEFT:
+                worm_direction = RIGHT
 
-    # Move the snake in the current direction.
-    if snake_direction == UP:
-        new_head = [snake[0][0], snake[0][1] - 10]
-    elif snake_direction == DOWN:
-        new_head = [snake[0][0], snake[0][1] + 10]
-    elif snake_direction == LEFT:
-        new_head = [snake[0][0] - 10, snake[0][1]]
-    elif snake_direction == RIGHT:
-        new_head = [snake[0][0] + 10, snake[0][1]]
+    # Move the worm in the current direction.
+    if worm_direction == UP:
+        new_head = [worm[0][0], worm[0][1] - 10]
+    elif worm_direction == DOWN:
+        new_head = [worm[0][0], worm[0][1] + 10]
+    elif worm_direction == LEFT:
+        new_head = [worm[0][0] - 10, worm[0][1]]
+    elif worm_direction == RIGHT:
+        new_head = [worm[0][0] + 10, worm[0][1]]
     
-    # Insert the new head of the snake at the beginning of the snake list.
-    # This gives the appearance of the snake moving.
-    snake.insert(0, new_head)
+    # Insert the new head of the worm at the beginning of the worm list.
+    # This gives the appearance of the worm moving.
+    worm.insert(0, new_head)
 
-    # Check for collision with food and update the score.
-    for food in foods:
-        if new_head == food.position:
-            foods.remove(food)
+    # Check for collision with apple and update the score.
+    for apple in apples:
+        if new_head == apple.position:
+            apples.remove(apple)
             score += 1            
-            # Add a new segment to the snake so it grows.
-            snake.append(snake[-1])
+            # Add a new segment to the worm so it grows.
+            worm.append(worm[-1])
 
-    # If food is not eaten the snake does not grow and last segment is removed.
+    # If apple is not eaten the worm does not grow and last segment is removed.
     else:
-        snake.pop()
+        worm.pop()
 
     # Check for collision with walls and end the game if collided.
     if new_head[0] < 0 or new_head[0] >= WINDOW_WIDTH or new_head[1] < 0 or new_head[1] >= WINDOW_HEIGHT:
@@ -114,8 +114,8 @@ while True:
         #pygame.quit()
         #sys.exit()
 
-    # Check for collision with snake itself and end the game if collided.
-    for segment in snake[1:]:
+    # Check for collision with worm itself and end the game if collided.
+    for segment in worm[1:]:
         if new_head == segment:
             pygame.time.wait(2000)  # Wait for 2000 milliseconds (2 seconds)
             #pygame.quit()
@@ -130,13 +130,13 @@ while True:
     # for y in range(0, WINDOW_HEIGHT, 10):
     #     pygame.draw.line(window, WHITE, (0, y), (WINDOW_WIDTH, y))
 
-    # Draw the snake segments on the screen.
-    for segment in snake:
+    # Draw the worm segments on the screen.
+    for segment in worm:
         pygame.draw.rect(window, WHITE, (segment[0], segment[1], 10, 10))
 
-    # Draw the food on the screen.
-    for food in foods:
-        pygame.draw.rect(window, food.color, (food.position[0], food.position[1], 10, 10))
+    # Draw the apple on the screen.
+    for apple in apples:
+        pygame.draw.rect(window, apple.color, (apple.position[0], apple.position[1], 10, 10))
 
     # Draw the score on the screen in the top left corner.
     score_text = score_font.render('Score: %d' % score, True, WHITE)
