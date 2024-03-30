@@ -7,16 +7,9 @@ from random import randint
 # Create a food class to handle food spawning.
 class Food:
     def __init__(self):
-        self.position = [0, 0]
+        self.position = [randint(0, (WINDOW_WIDTH - 10) // 10) * 10, randint(0, (WINDOW_HEIGHT - 10) // 10) * 10]
         self.color = GREEN
-        self.spawned = False
-        self.last_spawn_time = pygame.time.get_ticks()
-
-    def spawn(self):
-        self.position[0] = randint(0, (WINDOW_WIDTH - 10) // 10) * 10
-        self.position[1] = randint(0, (WINDOW_HEIGHT - 10) // 10) * 10
-        self.spawned = True
-        self.last_spawn_time = pygame.time.get_ticks()
+        self.spawn_time = pygame.time.get_ticks()
 
 # Initialize the game engine.
 pygame.init()
@@ -54,7 +47,9 @@ new_head = [0, 0]
 food = [0, 0]
 food_color = GREEN
 food_spawned = False
-food = Food()
+
+# Set up the foods list.
+foods = [Food(), Food(), Food()]
 
 # Set up the score font.
 score = 0
@@ -72,8 +67,9 @@ while True:
             sys.exit()
 
         # Spawn food if 5 seconds have passed since the last spawn
-        if pygame.time.get_ticks() - food.last_spawn_time >= 5000:
-            food.spawn()
+        if pygame.time.get_ticks() - foods[-1].spawn_time >= 5000:
+        # if pygame.time.get_ticks() - food.last_spawn_time >= 5000:
+            foods.append(Food())
 
         # Check for key presses and update the snake's direction.
         elif event.type == KEYDOWN:
@@ -96,27 +92,19 @@ while True:
     elif snake_direction == RIGHT:
         new_head = [snake[0][0] + 10, snake[0][1]]
     
-    # Insert the new head of the snake.
+    # Insert the new head of the snake at the beginning of the snake list.
+    # This gives the appearance of the snake moving.
     snake.insert(0, new_head)
-    
-    # Spawn food every 5 seconds if not already spawned.
-    if not food_spawned:
-        food = Food()
-        food.spawn()
-        food_spawned = True
 
-    # If 5 seconds has elapsed spawn new food.
-    if time.time() - start_time > 5:
-        food = Food()
-        food.spawn()
-        start_time = time.time()
-        
-    # Check for collision with food and update score.
-    if new_head == food.position:
-        food_spawned = False
-        score += 1
-        
-    # If food not eaten snake does not grow and last segment is removed.
+    # Check for collision with food and update the score.
+    for food in foods:
+        if new_head == food.position:
+            foods.remove(food)
+            score += 1            
+            # Add a new segment to the snake so it grows.
+            snake.append(snake[-1])
+
+    # If food is not eaten the snake does not grow and last segment is removed.
     else:
         snake.pop()
 
@@ -147,7 +135,8 @@ while True:
         pygame.draw.rect(window, WHITE, (segment[0], segment[1], 10, 10))
 
     # Draw the food on the screen.
-    pygame.draw.rect(window, food_color, (food.position[0], food.position[1], 10, 10))
+    for food in foods:
+        pygame.draw.rect(window, food.color, (food.position[0], food.position[1], 10, 10))
 
     # Draw the score on the screen in the top left corner.
     score_text = score_font.render('Score: %d' % score, True, WHITE)
@@ -160,4 +149,4 @@ while True:
     clock.tick(20)
 
 # Quit the game engine.
-pygame.quit()
+#pygame.quit()

@@ -2,13 +2,15 @@ This project is a test of GitHub Copilot, an AI programming assistant. I am usin
 
 ## About the Game
 
-The game is currently under development. Copilot decided we are going to use Snake as the foundation of our ever evolving game.
+The game is currently under development. Copilot decided we are going to use Snake as the foundation of our ever evolving game. However, I am renaming the game to Worm. 
 
 ## TODO:
 - [x] Fix head collision
 - [x] Time based food spawning
-- [ ] Each food spawn should be unique object
-- [ ] Color change spawning
+- [x] Each food spawn should be unique object
+- [ ] Spawn golden apples
+- [ ] Fix bug where game freezes when apple is spawned
+- [ ] 
 
 ## Setup and Installation
 
