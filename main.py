@@ -4,12 +4,22 @@ import time
 from pygame.locals import *
 from random import randint
 
-# Create a apple class to handle apple spawning.
+# Apple class to handle apple spawning.
 class Apple:
     def __init__(self):
         self.position = [randint(0, (WINDOW_WIDTH - 10) // 10) * 10, randint(0, (WINDOW_HEIGHT - 10) // 10) * 10]
         self.color = GREEN
         self.spawn_time = pygame.time.get_ticks()
+
+# Function to chose a color for the apple.
+def choose_color():
+    color = randint(0, 100)
+    if color >= 0 and color < 10:
+        return GOLD
+    elif color >= 10 and color < 20:
+        return RED
+    elif color >= 20 and color <= 100:
+        return GREEN
 
 # Initialize the game engine.
 pygame.init()
@@ -23,12 +33,16 @@ WINDOW_HEIGHT = 600
 window = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
 pygame.display.set_caption('worm')
 
+# Initialize apple spawn time for the game.
+apple_spawn_time = 5000    # in milliseconds
+
 # Set up the colors for the game.
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
 RED = (255, 0, 0)
 GREEN = (0, 255, 0)
 BLUE = (0, 0, 255)
+GOLD = (255, 215, 0)
 
 # Set up the directions for the worm.
 UP = 1
@@ -56,10 +70,11 @@ clock = pygame.time.Clock()
 # Main game loop
 while True:
     # Spawn apple if 5 seconds have passed since the last spawn
-    if pygame.time.get_ticks() - apples[-1].spawn_time >= 5000:
-    # if pygame.time.get_ticks() - apple.last_spawn_time >= 5000:
-        apples.append(Apple())  
-
+    if pygame.time.get_ticks() - apples[-1].spawn_time >= apple_spawn_time:
+        apple = Apple()
+        apple.color = choose_color()
+        apples.append(apple)
+          
     # Check for events and update the worm's direction.
     for event in pygame.event.get():
         if event.type == QUIT:
