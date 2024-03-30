@@ -9,7 +9,7 @@ The game is currently under development. Copilot decided we are going to use Sna
 - [x] Time based food spawning
 - [x] Each food spawn should be unique object
 - [ ] Spawn golden apples
-- [ ] Fix bug where game freezes when apple is spawned
+- [x] Fix bug where game freezes when apple is spawned
 - [ ] 
 
 ## Setup and Installation
