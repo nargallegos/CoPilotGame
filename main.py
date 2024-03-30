@@ -43,11 +43,6 @@ worm_direction = RIGHT
 # Initialize new_head variable.
 new_head = [0, 0]
 
-# Set up the apple variables.
-apple = [0, 0]
-apple_color = GREEN
-apple_spawned = False
-
 # Set up the apples list.
 apples = [Apple(), Apple(), Apple()]
 
